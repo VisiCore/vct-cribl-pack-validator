@@ -1,0 +1,8 @@
+# Pack files (uploaded for review, not stored in repo)
+*.crbl
+
+# Temporary extraction directory
+tmp/
+
+# macOS
+.DS_Store
