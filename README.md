@@ -31,26 +31,45 @@ git clone https://github.com/VisiCore/vct-cribl-pack-validator
 cd vct-cribl-pack-validator
 ```
 
-That's it. The `CLAUDE.md` in the root is automatically loaded by Claude Code every session — no configuration needed.
+No additional configuration needed.
 
 ---
 
 ## Usage
 
-Start a Claude Code session in this directory and provide the `.crbl` file path:
+There are two ways to use the validator — both produce the same validation checks and report format.
 
-```bash
-claude
+### Option 1: Skill (recommended)
+
+The `/validate-pack` skill is an on-demand command you invoke explicitly. Start a Claude Code session in this directory and run:
+
+```
+/validate-pack my-pack.crbl
+/validate-pack /path/to/your-pack.crbl
 ```
 
-Then in the session:
+This is the recommended approach — the skill only loads when invoked, keeping your context window free for other work.
+
+### Option 2: CLAUDE.md (auto-loaded)
+
+The `CLAUDE.md` in the repo root is automatically loaded into every Claude Code session in this directory. Just describe what you want naturally:
 
 ```
 analyze my-pack.crbl
 analyze /path/to/your-pack.crbl
 ```
 
-Claude Code will automatically unpack the `.crbl` (gzip tarball), run all validation checks, output a structured report, and clean up temp files. No special commands needed — just point at the file.
+This works because the validation instructions are always present in context. The tradeoff is that the instructions consume context window space even when you're not validating a pack.
+
+### Which should I use?
+
+| | Skill (`/validate-pack`) | CLAUDE.md (natural language) |
+|---|---|---|
+| Trigger | Explicit `/validate-pack <file>` | Any message mentioning a `.crbl` file |
+| Context cost | Zero until invoked | Always loaded |
+| Best for | Focused validation runs | Working in this repo full-time |
+
+Both approaches run identical validation checks and produce the same report format.
 
 ---
 
@@ -111,10 +130,13 @@ Reports are saved to `./reports/<pack_id>-<date>.md` and look like this:
 
 ```
 vct-cribl-pack-validator/
-├── CLAUDE.md              ← Claude Code auto-loads this every session
-├── README.md              ← this file
-├── reports/               ← generated review reports saved here
-└── tmp/                   ← temporary extraction dir (auto-created, auto-cleaned)
+├── .claude/
+│   └── skills/
+│       └── validate-pack.md   ← /validate-pack skill definition
+├── CLAUDE.md                  ← auto-loaded validation instructions
+├── README.md                  ← this file
+├── reports/                   ← generated review reports saved here
+└── tmp/                       ← temporary extraction dir (auto-created, auto-cleaned)
 ```
 
 Place `.crbl` files anywhere — just provide the path when you run an analysis.
@@ -131,6 +153,11 @@ Pairs well with the Cribl platform's March 2026 update introducing global destin
 
 ## Contributing
 
-Standards are defined in `CLAUDE.md`. To update validation rules, edit the **Validation Checks** section. The report format is also defined there.
+Validation rules and the report format are defined in two places that should be kept in sync:
+
+- `CLAUDE.md` — auto-loaded project instructions
+- `.claude/skills/validate-pack.md` — on-demand skill
+
+When updating validation checks or the report format, update both files.
 
 Pull requests welcome for additional validation checks and improvements.
