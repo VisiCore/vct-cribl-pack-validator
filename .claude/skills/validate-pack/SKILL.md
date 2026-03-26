@@ -1,11 +1,8 @@
 ---
 name: validate-pack
 description: Validate a Cribl .crbl pack file against pack standards and produce a structured review report.
-user_invocable: true
-arguments:
-  - name: file
-    description: Path to the .crbl file to validate
-    required: true
+user-invocable: true
+argument-hint: "[file-path]"
 ---
 
 # Cribl Pack Validator
