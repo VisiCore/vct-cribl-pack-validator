@@ -1,6 +1,14 @@
 ---
 name: validate-pack
-description: Validate a Cribl .crbl pack file against pack standards and produce a structured review report.
+description: >-
+  This skill should be used when the user asks to "validate a Cribl pack",
+  "review a .crbl file", "check pack standards", "run pack validation",
+  "audit a crbl", or provides a .crbl file path for review. It unpacks a
+  Cribl .crbl pack file, validates it against Cribl pack standards (naming
+  conventions, routing configuration, source/destination review, pipeline
+  ordering, PII masking, credential hygiene, test coverage), and produces
+  a structured review report with pass/warn/fail findings and an overall
+  APPROVED / NEEDS CHANGES / BLOCKED verdict.
 user-invocable: true
 argument-hint: "[file-path]"
 ---
