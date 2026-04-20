@@ -1,142 +1,77 @@
 # VCT Cribl Pack Validator
 
-AI-powered Cribl pack review and validation using Claude Code. Point it at a `.crbl` file, get a structured review report back.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that validates Cribl `.crbl` pack files against pack standards and produces structured review reports.
 
----
+## Installation
 
-## What It Does
+### From GitHub
 
-Validates Cribl packs against official pack standards including:
+```bash
+# Add this repo as a plugin marketplace source
+claude plugins marketplace add VisiCore/vct-cribl-pack-validator
 
-- **Naming & ID conventions** — pack IDs, pipeline names, route names
-- **Routing configuration** — `__group` vs `input_id`, `data_type` fields
-- **Source & destination review** — hardcoded paths, duplicate destinations
-- **Pipeline & function audit** — ordering, redundancy, risky logic
-- **PII & security check** — mask coverage, credential hygiene
-- **Test coverage gap analysis** — what tests exist and what's missing
+# Install the plugin
+claude plugins install validate-pack
+```
 
----
-
-## Prerequisites
-
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
-- A Cribl `.crbl` pack file to validate
-
----
-
-## Setup
-
-Clone the repo:
+### For Local Development
 
 ```bash
 git clone https://github.com/VisiCore/vct-cribl-pack-validator
 cd vct-cribl-pack-validator
+claude plugins marketplace add .
+claude plugins install validate-pack --scope local
 ```
 
-To use the `/validate-pack` skill from **any directory**, add this repo's skills to your user-level Claude Code settings (`~/.claude/settings.json`):
+### Verify
 
-```json
-{
-  "skills": [
-    "/path/to/vct-cribl-pack-validator/.claude/skills"
-  ]
-}
+```bash
+claude plugins list
 ```
-
----
 
 ## Usage
-
-From any Claude Code session:
 
 ```
 /validate-pack my-pack.crbl
 /validate-pack /path/to/your-pack.crbl
 ```
 
-The skill unpacks the `.crbl`, runs all validation checks, outputs the report, saves it to `./reports/`, and cleans up automatically.
+The skill unpacks the `.crbl`, runs all validation checks, outputs a structured report, saves it to `./reports/`, and cleans up automatically.
 
----
+Reports produce an **APPROVED**, **NEEDS CHANGES**, or **BLOCKED** verdict.
 
-## Report Output
+## What It Validates
 
-Reports are saved to `./reports/<pack_id>-<date>.md` and look like this:
+- **Naming & ID conventions** -- pack IDs, pipeline names, route names
+- **Routing configuration** -- `__group` vs `input_id`, `data_type` fields
+- **Source & destination review** -- hardcoded paths, duplicate destinations
+- **Pipeline & function audit** -- ordering, redundancy, risky logic
+- **PII & security check** -- mask coverage, credential hygiene
+- **Test coverage gap analysis** -- what tests exist and what's missing
 
-```
-════════════════════════════════════════════
-  CRIBL PACK REVIEW REPORT
-  Pack: cc-edge-http-collector-io
-  File: example-http-collector.crbl
-  Date: 2026-03-05
-════════════════════════════════════════════
+Standards reference:
+- [Cribl Stream Pack Standards](https://docs.cribl.io/stream/packs-standards/)
+- [Cribl Edge Pack Standards](https://docs.cribl.io/edge/packs-standards/)
 
-## Pack Inventory
-- Sources: 2 (http-in, file-monitor)
-- Pipelines: 3 (parse-http, mask-pii, enrich)
-- Routes: 4
-- Destinations: 1
-- Functions used: Eval, Mask, Regex Extract, Drop
-
-## Passed (8)
-...
-
-## Warnings — Non-Blocking (2)
-...
-
-## Required Changes — Blocking (1)
-- Routing uses input_id: Route 'to-splunk' filters on __inputId.
-  Change to __group to prevent breaks on source rename.
-
-## Test Coverage
-...
-
-════════════════════════════════════════════
-  VERDICT: NEEDS CHANGES
-════════════════════════════════════════════
-```
-
----
-
-## Pack Standards Enforced
-
-| Standard | Rule |
-|---|---|
-| Pack ID format | `cc-edge-<source>-io` for edge packs, `cc-stream-<source>-io` for stream packs |
-| Pipeline naming | Never `main` — always descriptive |
-| Routing field | Always `__group`, never `input_id` |
-| Source metadata | `data_type` field required on all sources |
-| Destinations | Prefer global destinations (post March 2026) |
-| File paths | Always environment variables, never hardcoded |
-| PII | Must be masked before any destination |
-
----
-
-## Repo Structure
+## Plugin Structure
 
 ```
 vct-cribl-pack-validator/
-├── .claude/
-│   ├── settings.local.json           ← project-level permission allowlist
-│   └── skills/
-│       └── validate-pack/
-│           └── SKILL.md              ← skill definition (single source of truth)
-├── CLAUDE.md                         ← repo context (no validation logic)
-├── README.md                         ← this file
-└── reports/                          ← generated review reports
+├── .claude-plugin/
+│   └── plugin.json               ← plugin manifest
+├── skills/
+│   └── validate-pack/
+│       └── SKILL.md              ← skill definition (single source of truth)
+├── CLAUDE.md                     ← repo maintenance context
+└── README.md                     ← this file
 ```
-
----
 
 ## Contributing
 
-All validation logic lives in a single file: `.claude/skills/validate-pack/SKILL.md`. Update checks, report format, or standards there — no duplication to keep in sync.
+All validation logic lives in `skills/validate-pack/SKILL.md`. Update checks, report format, or standards there -- no duplication to keep in sync.
 
 Pull requests welcome for additional validation checks and improvements.
 
----
-
 ## Background
 
-This tool was built to address the bottleneck of manual pack review. Cribl's pack ecosystem is growing significantly and the manual review process (naming script + human eyeballs) doesn't scale. This gives reviewers an automated first pass so human review time is focused on edge cases and judgment calls.
-
-Pairs well with the Cribl platform's March 2026 update introducing global destination access from packs and pack-to-pack routing.
+This tool addresses the bottleneck of manual pack review. Cribl's pack ecosystem is growing and manual review doesn't scale. This gives reviewers an automated first pass so human time is focused on edge cases and judgment calls.
