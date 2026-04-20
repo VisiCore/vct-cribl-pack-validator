@@ -1,0 +1,11 @@
+{
+  "name": "validate-pack",
+  "version": "1.0.0",
+  "description": "Validates Cribl .crbl pack files against pack standards and produces structured review reports with pass/warn/fail verdicts.",
+  "author": {
+    "name": "VisiCore"
+  },
+  "repository": "https://github.com/VisiCore/vct-cribl-pack-validator",
+  "keywords": ["cribl", "pack", "validation", "review", "crbl", "observability"],
+  "skills": ["./skills/validate-pack"]
+}
