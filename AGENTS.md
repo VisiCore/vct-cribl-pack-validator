@@ -12,9 +12,9 @@ vct-cribl-pack-validator/
 │   └── skills/
 │       └── validate-pack/
 │           └── SKILL.md   ← skill definition (single source of truth)
-├── CLAUDE.md              ← this file (repo context only)
-├── README.md              ← user-facing docs
-└── reports/               ← generated review reports (gitignored)
+├── CLAUDE.md              ← symlink to AGENTS.md
+├── AGENTS.md              ← this file (repo context only)
+└── README.md              ← user-facing docs
 ```
 
 ## Editing Validation Rules

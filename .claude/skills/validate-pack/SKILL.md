@@ -5,8 +5,7 @@ description: >-
   including phrases like "validate a Cribl pack", "review a .crbl file",
   "check pack standards", "run pack validation", "audit a crbl", or when a
   `.crbl` file path is provided for review against Cribl pack standards.
-metadata:
-  argument-hint: "[file-path]"
+argument-hint: "[file-path]"
 ---
 
 # Cribl Pack Validator

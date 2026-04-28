@@ -125,8 +125,7 @@ vct-cribl-pack-validator/
 │       └── validate-pack/
 │           └── SKILL.md   ← skill definition (single source of truth)
 ├── CLAUDE.md              ← repo context (no validation logic)
-├── README.md              ← this file
-└── reports/               ← generated review reports (gitignored)
+└── README.md              ← this file
 ```
 
 ---
