@@ -6,7 +6,12 @@ AI-powered Cribl pack review and validation using Claude Code. Point it at a `.c
 
 ## What It Does
 
-Validates Cribl packs against official pack standards including:
+Validates Cribl packs against the official pack standards published by Cribl:
+
+- [Cribl Stream pack standards](https://docs.cribl.io/stream/packs-standards/)
+- [Cribl Edge pack standards](https://docs.cribl.io/edge/packs-standards/)
+
+Coverage areas:
 
 - **Naming & ID conventions** — pack IDs, pipeline names, route names
 - **Routing configuration** — `__group` vs `input_id`, `data_type` fields
@@ -24,7 +29,7 @@ Validates Cribl packs against official pack standards including:
 
 ---
 
-## Setup
+## Installation
 
 Clone the repo:
 
@@ -49,7 +54,7 @@ To use the `/validate-pack` skill from **any directory**, add this repo's skills
 
 From any Claude Code session:
 
-```
+```text
 /validate-pack my-pack.crbl
 /validate-pack /path/to/your-pack.crbl
 ```
@@ -62,7 +67,7 @@ The skill unpacks the `.crbl`, runs all validation checks, outputs the report, s
 
 Reports are saved to `./reports/<pack_id>-<date>.md` and look like this:
 
-```
+```text
 ════════════════════════════════════════════
   CRIBL PACK REVIEW REPORT
   Pack: cc-edge-http-collector-io
@@ -113,23 +118,24 @@ Reports are saved to `./reports/<pack_id>-<date>.md` and look like this:
 
 ## Repo Structure
 
-```
+```text
 vct-cribl-pack-validator/
 ├── .claude/
-│   ├── settings.local.json           ← project-level permission allowlist
 │   └── skills/
 │       └── validate-pack/
-│           └── SKILL.md              ← skill definition (single source of truth)
-├── CLAUDE.md                         ← repo context (no validation logic)
-├── README.md                         ← this file
-└── reports/                          ← generated review reports
+│           └── SKILL.md   ← skill definition (single source of truth)
+├── CLAUDE.md              ← repo context (no validation logic)
+├── README.md              ← this file
+└── reports/               ← generated review reports (gitignored)
 ```
 
 ---
 
 ## Contributing
 
-All validation logic lives in a single file: `.claude/skills/validate-pack/SKILL.md`. Update checks, report format, or standards there — no duplication to keep in sync.
+All validation logic lives in a single file:
+`.claude/skills/validate-pack/SKILL.md`. Update checks, report format, or
+standards there — no duplication to keep in sync.
 
 Pull requests welcome for additional validation checks and improvements.
 
@@ -137,6 +143,10 @@ Pull requests welcome for additional validation checks and improvements.
 
 ## Background
 
-This tool was built to address the bottleneck of manual pack review. Cribl's pack ecosystem is growing significantly and the manual review process (naming script + human eyeballs) doesn't scale. This gives reviewers an automated first pass so human review time is focused on edge cases and judgment calls.
+This tool was built to address the bottleneck of manual pack review. Cribl's
+pack ecosystem is growing significantly and the manual review process (naming
+script + human eyeballs) doesn't scale. This gives reviewers an automated first
+pass so human review time is focused on edge cases and judgment calls.
 
-Pairs well with the Cribl platform's March 2026 update introducing global destination access from packs and pack-to-pack routing.
+Pairs well with the Cribl platform's March 2026 update introducing global
+destination access from packs and pack-to-pack routing.
