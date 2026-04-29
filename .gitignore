@@ -4,5 +4,8 @@
 # Temporary extraction directory
 tmp/
 
+# Generated review reports (local output)
+reports/
+
 # macOS
 .DS_Store
