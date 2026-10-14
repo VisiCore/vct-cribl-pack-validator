@@ -1,7 +1,10 @@
 ---
 name: validate-pack
-description: Validate a Cribl .crbl pack file against pack standards and produce a structured review report.
-user-invocable: true
+description: >-
+  Use when the user asks to validate, review, audit, or check a Cribl pack —
+  including phrases like "validate a Cribl pack", "review a .crbl file",
+  "check pack standards", "run pack validation", "audit a crbl", or when a
+  `.crbl` file path is provided for review against Cribl pack standards.
 argument-hint: "[file-path]"
 ---
 
